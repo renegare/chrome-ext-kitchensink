@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "dev:server": "node -r babel-register dummywebsite/src/server.js"
+  },
   "dependencies": {
     "babel-core": "6.26.0",
     "babel-plugin-transform-class-properties": "6.24.1",
