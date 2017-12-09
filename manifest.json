@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+
+  "name": "Renegare Chrome Extension Kitichensink",
+  "description": "Hopefully some useful examples on how to build something ...",
+  "version": "0.0.0",
+
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+
+  "permissions": [
+    "activeTab",
+    "storage"
+  ]
+}
