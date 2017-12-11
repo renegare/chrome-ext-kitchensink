@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import createStore from './createStore'
 import Widget from './Widget'
 import { Provider } from 'react-redux'
-import { CONNECTED, SET_PAGE_STATE } from './constants'
+import { CONNECTED, SET_PAGE_STATE, GET_STATE } from './constants'
 
 export default class Extenstion extends Component {
   componentWillMount() {
@@ -15,20 +15,19 @@ export default class Extenstion extends Component {
       const state = JSON.parse(message)
 
       store.dispatch({
-        type: CONNECTED,
+        type: SET_PAGE_STATE,
+        payload: { page: state },
       })
 
       store.dispatch({
-        type: SET_PAGE_STATE,
-        payload: { page: state },
+        type: CONNECTED,
       })
     })
 
     this.setState({ store })
 
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-      console.log({ tabs })
-      chrome.tabs.sendMessage(tabs[0].id, 'GET_STATE')
+      chrome.tabs.sendMessage(tabs[0].id, GET_STATE)
     })
   }
 

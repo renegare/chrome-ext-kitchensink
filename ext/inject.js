@@ -1,9 +1,10 @@
 const EXPECTED_SOURCE = 'cek-react-redux-bridge'
+const GET_STATE = 'GET_STATE'
+
 const code = document.createTextNode(`
   (global => {
     const sendMessage = (data) => {
       window.postMessage({ source: '${EXPECTED_SOURCE}', state: JSON.stringify(data) }, '*')
-      // console.log('>>> State', data)
     }
 
     const checkForState = (attempts=0) => {
@@ -40,12 +41,13 @@ let pageState = null
 
 window.addEventListener('message', ({ data: { source, state } }) => {
   if (source !== EXPECTED_SOURCE) return
+  console.log('sending message', { state })
   pageState = state
   chrome.runtime.sendMessage(pageState)
 })
 
 chrome.runtime.onMessage.addListener((message, sender) => {
-  console.log(message)
-  if (!pageState) return
+  console.log()
+  if (message !== GET_STATE || !pageState) return
   chrome.runtime.sendMessage(pageState)
 })

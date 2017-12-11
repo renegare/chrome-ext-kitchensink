@@ -5,7 +5,6 @@ const Loading = () => <p>Loading ...</p>
 
 const ListOfItems = props => {
   const { state: { items } } = props
-  if (!items || items.length < 1) return <Loading />
 
   return (
     <ul>
