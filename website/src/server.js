@@ -12,7 +12,7 @@ console.log('CONFIG', { PORT, ASSETPATH })
 
 app.use('/server', express.static(ASSETPATH))
 
-app.use('/', ssr)
+app.use(ssr)
 
 app.listen(PORT || 3000, err => {
   if (err) {
