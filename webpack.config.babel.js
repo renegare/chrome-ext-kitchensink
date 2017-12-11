@@ -5,6 +5,7 @@ import CopyWebpackPlugin from 'copy-webpack-plugin'
 export default {
   entry: {
     popup: './ext/popup.js',
+    inject: './ext/inject.js',
     client: './website/client.js',
   },
 
