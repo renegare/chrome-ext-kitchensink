@@ -9,6 +9,7 @@ export default class Extenstion extends Component {
     const store = createStore(this.props.initialData)
 
     chrome.runtime.onMessage.addListener((message, sender) => {
+      console.log('hmmm', message, sender)
       if (!sender.tab.active) return
 
       const state = JSON.parse(message)
@@ -24,8 +25,14 @@ export default class Extenstion extends Component {
     })
 
     this.setState({ store })
+
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+      console.log({ tabs })
+      chrome.tabs.sendMessage(tabs[0].id, 'GET_STATE')
+    })
   }
 
+  // @TODO on componentDidMount send message to current tab to resend data
   render() {
     return (
       <Provider store={this.state.store}>

@@ -16,6 +16,7 @@ const code = document.createTextNode(`
             return sendMessage(store.getState())
           })
           console.log('CEK initialised')
+          sendMessage(store.getState())
         } catch (err) {
           console.error('CEK ERROR: ', err)
         }
@@ -35,7 +36,16 @@ script.type = 'text/javascript'
 script.appendChild(code)
 exec(script)
 
+let pageState = null
+
 window.addEventListener('message', ({ data: { source, state } }) => {
   if (source !== EXPECTED_SOURCE) return
-  chrome.runtime.sendMessage(state)
+  pageState = state
+  chrome.runtime.sendMessage(pageState)
+})
+
+chrome.runtime.onMessage.addListener((message, sender) => {
+  console.log(message)
+  if (!pageState) return
+  chrome.runtime.sendMessage(pageState)
 })
