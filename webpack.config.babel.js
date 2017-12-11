@@ -5,6 +5,7 @@ import CopyWebpackPlugin from 'copy-webpack-plugin'
 export default {
   entry: {
     popup: './ext/popup.js',
+    client: './website/client.js',
   },
 
   output: {
@@ -16,7 +17,10 @@ export default {
     rules: [
       {
         test: /\.js$/,
-        include: [path.resolve(__dirname, './ext')],
+        include: [
+          path.resolve(__dirname, './ext'),
+          path.resolve(__dirname, './website'),
+        ],
         use: 'babel-loader',
       },
     ],

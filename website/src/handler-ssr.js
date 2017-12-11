@@ -18,6 +18,10 @@ export default (req, res) => {
   <head></head>
   <body>
     <div id="app">${renderToString(<App initialData={initialData} />)}</div>
+    <script type="text/javascript">
+      window.__INITIAL_DATA__ = ${JSON.stringify(initialData)}
+    </script>
+    <script type="text/javascript" src="/server/client.bundle.js"></script>
   </body>
 </html>`)
 }

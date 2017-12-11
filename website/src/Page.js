@@ -18,7 +18,15 @@ export default class Page extends Component {
 
   renderItems() {
     const { items } = this.props
-    return <ul>{items.map(item => <li key={item.id}>{item.title}</li>)}</ul>
+    return (
+      <ul>
+        {items.map(item => (
+          <li key={item.id}>
+            <Toggle {...item} />
+          </li>
+        ))}
+      </ul>
+    )
   }
 
   renderNoItems() {
@@ -31,3 +39,10 @@ export default class Page extends Component {
     return hasItems ? this.renderItems() : this.renderNoItems()
   }
 }
+
+const Toggle = ({ title, enabled, onToggle }) => (
+  <label>
+    {title}
+    <button onClick={() => onToggle()}>{enabled ? 'en' : 'dis'}abled</button>
+  </label>
+)
