@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { toggleItem } from './actions'
 
 const Loading = () => <p>Loading ...</p>
 
 const ListOfItems = props => {
-  const { state: { items } } = props
+  const { state: { items }, toggleOption } = props
 
   return (
     <ul>
@@ -12,7 +13,12 @@ const ListOfItems = props => {
         <li key={item.id}>
           <label>
             {item.title}
-            <button style={{ background: item.enabled ? 'green' : 'red' }}>
+            <button
+              onClick={() => {
+                toggleItem(item.id, item.enabled)
+              }}
+              style={{ background: item.enabled ? 'green' : 'red' }}
+            >
               {item.enabled ? 'en' : 'dis'}abled
             </button>
           </label>

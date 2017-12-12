@@ -13,7 +13,6 @@ const connectedReducer = (state = false, action) => {
 const pageReducer = (state = { wtf: true }, action) => {
   switch (action.type) {
     case SET_PAGE_STATE:
-      console.log('updating state?!!?')
       return action.payload.page
   }
 
