@@ -2,10 +2,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { toggleItem } from './actions'
 
-const Loading = () => <p>Loading ...</p>
+const Loading = ({ what }) => <p>Loading {what} ...</p>
 
 const ListOfItems = props => {
-  const { state: { items }, toggleOption } = props
+  const { items } = props
 
   return (
     <ul>
@@ -28,12 +28,13 @@ const ListOfItems = props => {
   )
 }
 
-const mapToState = state => ({
-  connected: state.connected,
-  state: state.page,
-})
+const mapToState = state => state.page
 
-export default connect(mapToState)(
-  ({ connected, state }) =>
-    connected ? <ListOfItems state={state} /> : <Loading />
-)
+export default connect(mapToState)(({ items }) => {
+  return (
+    <section>
+      <h3> Items </h3>
+      {items ? <ListOfItems items={items} /> : <Loading what="items" />}
+    </section>
+  )
+})

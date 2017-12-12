@@ -21,11 +21,12 @@ const code = document.createTextNode(`
       }
     })
 
-    const checkForState = (attempts=0) => {
+    const checkForState = (attempts=1) => {
+      if(attempts > 10) throw new Error('3 attenpts exceeded')
       setTimeout(() => {
-        if(typeof global.$r !== 'object') return checkForState(attempts + 1)
-
         try {
+          if(typeof global.$r !== 'object') return checkForState(attempts + 1)
+
           store = global.$r.state.store
           store.subscribe(sendState)
           console.log('CEK initialised')
@@ -33,7 +34,7 @@ const code = document.createTextNode(`
         } catch (err) {
           console.error('CEK ERROR: ', err)
         }
-      })
+      }, 300)
     }
 
     checkForState()
@@ -49,26 +50,17 @@ script.type = 'text/javascript'
 script.appendChild(code)
 exec(script)
 
-let pageState = null
-
 window.addEventListener('message', ({ data: { source, state } }) => {
   if (source !== EXPECTED_SOURCE) return
-  pageState = state
-  chrome.runtime.sendMessage(pageState)
+  chrome.runtime.sendMessage(state)
 })
 
 chrome.runtime.onMessage.addListener((message, sender) => {
-  switch (message.actionType) {
-    case GET_STATE:
-      if (!pageState) return
-      return chrome.runtime.sendMessage(pageState)
-    case DISPATCH:
-      return window.postMessage(
-        {
-          ...message,
-          id: chrome.runtime.id,
-        },
-        '*'
-      )
-  }
+  return window.postMessage(
+    {
+      ...message,
+      id: chrome.runtime.id,
+    },
+    '*'
+  )
 })

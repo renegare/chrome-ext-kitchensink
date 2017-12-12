@@ -10,16 +10,9 @@ export default class Extenstion extends Component {
 
     chrome.runtime.onMessage.addListener((message, sender) => {
       if (!sender.tab.active) return
-
-      const state = JSON.parse(message)
-
       store.dispatch({
         type: SET_PAGE_STATE,
-        payload: { page: state },
-      })
-
-      store.dispatch({
-        type: CONNECTED,
+        payload: { page: JSON.parse(message) },
       })
     })
 
@@ -30,7 +23,6 @@ export default class Extenstion extends Component {
     })
   }
 
-  // @TODO on componentDidMount send message to current tab to resend data
   render() {
     return (
       <Provider store={this.state.store}>
