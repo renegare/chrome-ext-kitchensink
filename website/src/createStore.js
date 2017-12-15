@@ -1,36 +1,40 @@
-import { combineReducers, createStore } from 'redux'
-import { SET_ITEM_STATE } from './constants'
+import { combineReducers, createStore, applyMiddleware, compose } from 'redux';
+import { SET_ITEM_STATE } from './constants';
 
 const itemsReducer = (state = [], action = {}) => {
   switch (action.type) {
     case SET_ITEM_STATE:
-      const { enabled, id } = action.payload
+      const { enabled, id } = action.payload;
       return state.map(item => {
         if (item.id === id) {
           return {
             ...item,
             enabled,
-          }
+          };
         }
 
-        return item
-      })
+        return item;
+      });
   }
 
-  return state
-}
+  return state;
+};
 
 const reducer = combineReducers({
   items: itemsReducer,
-})
+});
 
-const devTools =
-  (typeof window === 'object' &&
-    window.__REDUX_DEVTOOLS_EXTENSION__ &&
-    window.__REDUX_DEVTOOLS_EXTENSION__()) ||
-  undefined
+const createChromeExtBridge = store => {
+  typeof window === 'object' &&
+    window.__CKE_REGISTER_REDUX__ &&
+    window.__CKE_REGISTER_REDUX__(store);
+};
 
 export default (initialState = {}) => {
-  const store = createStore(reducer, initialState, devTools)
-  return store
-}
+  const store = createStore(reducer, initialState);
+
+  // @TODO: make this configurable so we control when it should be called.
+  createChromeExtBridge(store);
+
+  return store;
+};
